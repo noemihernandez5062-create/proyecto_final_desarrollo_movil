@@ -1,0 +1,7 @@
+{
+  "name": "reconocimiento-facial",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

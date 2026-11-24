@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Reconocimiento Facial</string>
+    <string name="title_activity_main">Reconocimiento Facial</string>
+    <string name="package_name">com.reconocimiento.facial</string>
+    <string name="custom_url_scheme">com.reconocimiento.facial</string>
+</resources>

@@ -1,0 +1,12 @@
+{
+  "name": "liveness-compare-faces",
+  "version": "1.0.0",
+  "description": "Lambda para comparar dos rostros con Amazon Rekognition",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-rekognition": "^3.700.0"
+  },
+  "volta": {
+    "node": "24.0.0"
+  }
+}

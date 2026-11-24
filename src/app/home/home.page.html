@@ -1,0 +1,78 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Verificación Biométrica</ion-title>
+  </ion-toolbar>
+  @if (cargando) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  }
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Paso 1 -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Paso 1</ion-card-subtitle>
+      <ion-card-title>Foto de referencia</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="ayuda">Toma una foto de frente, con buena luz. Con ella se comparará la prueba de vida.</p>
+      <div class="foto" (click)="tomarFotoReferencia()">
+        @if (fotoReferencia) {
+          <img [src]="fotoReferencia.vistaPrevia" alt="Foto de referencia" />
+        } @else {
+          <ion-icon name="camera-outline"></ion-icon>
+          <span>Tocar para tomar foto</span>
+        }
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Paso 2 -->
+  <ion-card [disabled]="!fotoReferencia">
+    <ion-card-header>
+      <ion-card-subtitle>Paso 2</ion-card-subtitle>
+      <ion-card-title>Prueba de vida</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="ayuda">Rekognition Face Liveness confirma que hay una persona real frente a la cámara y no una foto o video.</p>
+      <ion-button expand="block" [disabled]="!fotoReferencia || cargando" (click)="iniciarPruebaDeVida()">
+        <ion-icon name="scan-outline" slot="start"></ion-icon>
+        Iniciar prueba de vida
+      </ion-button>
+
+      @if (liveness) {
+        <ion-item lines="none">
+          <ion-icon slot="start"
+            [name]="esPersonaReal ? 'checkmark-circle' : 'close-circle'"
+            [color]="esPersonaReal ? 'success' : 'danger'">
+          </ion-icon>
+          <ion-label>
+            <h2>{{ esPersonaReal ? 'Persona real' : 'No se confirmó la prueba de vida' }}</h2>
+            <p>Estado: {{ liveness.status }} · Confianza: {{ liveness.confidence | number:'1.0-2' }}%</p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Paso 3 -->
+  <ion-card [disabled]="!comparacion">
+    <ion-card-header>
+      <ion-card-subtitle>Paso 3</ion-card-subtitle>
+      <ion-card-title>Comparación de rostros</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      @if (comparacion) {
+        <div class="resultado" [class.ok]="comparacion.match">
+          <ion-icon [name]="comparacion.match ? 'shield-checkmark' : 'alert-circle'"></ion-icon>
+          <h2>{{ comparacion.match ? 'Identidad verificada' : 'El rostro no coincide' }}</h2>
+          <p>Similitud: {{ comparacion.similarity | number:'1.0-2' }}% (mínimo {{ comparacion.threshold }}%)</p>
+        </div>
+      } @else {
+        <p class="ayuda">Se compara el rostro de la prueba de vida con la foto de referencia.</p>
+      }
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
